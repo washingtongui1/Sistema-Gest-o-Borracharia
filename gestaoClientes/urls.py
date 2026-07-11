@@ -7,4 +7,5 @@ urlpatterns = [
     path('gestaoClientes/', views.gestaoClientes, name='gestao_clientes'),
     path('estoque/', views.estoque_geral, name='estoque_geral'), # Adicione esta linha
     path('cadastrar-cliente/', views.cadastrar_usuario, name='cadastrar_cliente'),
+    path('cadastrar-veiculo/<int:id_cliente>/', views.cadastrar_veiculo, name='cadastrar_veiculo'),
 ]

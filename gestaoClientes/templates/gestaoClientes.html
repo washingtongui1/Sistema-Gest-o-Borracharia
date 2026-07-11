@@ -68,11 +68,23 @@
           </span>
           Cadastrar Cliente
         </a>
-        <button class="btn-custom">
-          <span class="icon"><img width="24" height="24" src="https://img.icons8.com/ios-filled/50/tesla-model-s.png"
-              alt="tesla-model-s"></span>
+        {% if cliente %}
+        <a href="{% url 'cadastrar_veiculo' cliente.id_cliente %}" class="btn-custom">
+          <span class="icon">
+            <img width="24" height="24" src="https://img.icons8.com/ios-filled/50/tesla-model-s.png"
+              alt="tesla-model-s">
+          </span>
+          Cadastrar Veículo
+        </a>
+        {% else %}
+        <button class="btn-custom" disabled title="Pesquise um cliente primeiro">
+          <span class="icon">
+            <img width="24" height="24" src="https://img.icons8.com/ios-filled/50/tesla-model-s.png"
+              alt="tesla-model-s">
+          </span>
           Cadastrar Veículo
         </button>
+        {% endif %}
         <button class="btn-custom">
           <span class="icon"><img width="24" height="24" src="https://img.icons8.com/ios-filled/50/plus.png"
               alt="plus"></span>

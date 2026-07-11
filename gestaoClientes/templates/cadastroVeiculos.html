@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/cadastroVeiculos.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="form-container">
+  <h2>Novo Veículo</h2>
+  <form method="POST">
+    {% csrf_token %}
+
+    <div class="mb-3">
+      <label class="form-label">Cliente</label>
+      <input type="text" class="form-control" value="{{ cliente.nome }}" readonly>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Placa</label>
+      <input type="text" name="placa" class="form-control" placeholder="Ex: ABC-1234" required>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Marca</label>
+        <input type="text" name="marca" class="form-control" placeholder="Marca" required>
+      </div>
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Modelo</label>
+        <input type="text" name="modelo" class="form-control" placeholder="Modelo" required>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Ano</label>
+      <input type="number" name="ano" class="form-control" placeholder="Ano" required>
+    </div>
+
+    <button type="submit" class="btn-cadastrar">Cadastrar novo veículo</button>
+  </form>
+</div>
+{% endblock %}

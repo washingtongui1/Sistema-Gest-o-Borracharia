@@ -48,6 +48,10 @@ def gestaoClientes(request):
             )
             if rows_c:
                 cliente = dict(zip(cols_c, rows_c[0]))
+                
+                # ADIÇÃO: Salva o ID autorizado na sessão do Django
+                request.session['id_cliente_autorizado'] = cliente['id_cliente']
+                
                 cols_v, rows_v = _executar_sql(
                     "SELECT * FROM [dbo].[Veiculos] WHERE id_cliente = ?", 
                     (cliente['id_cliente'],)
@@ -55,6 +59,8 @@ def gestaoClientes(request):
                 veiculos = [dict(zip(cols_v, row)) for row in rows_v]
             else:
                 error_message = "Cliente não encontrado."
+                # Opcional: Limpa a sessão se não encontrar ninguém
+                request.session.pop('id_cliente_autorizado', None)
         except Exception as exc:
             logger.exception('Erro na busca')
             error_message = f'Erro na consulta: {exc}'
@@ -100,3 +106,49 @@ def cadastrar_usuario(request):
             messages.error(request, f'Erro ao salvar: {e}')
 
     return render(request, 'cadastroClientes.html')
+
+def cadastrar_veiculo(request, id_cliente):
+    # (Mantenha a verificação de segurança da sessão que já fizemos aqui)
+    id_autorizado = request.session.get('id_cliente_autorizado')
+    if id_autorizado is None or int(id_cliente) != int(id_autorizado):
+        messages.error(request, "Acesso negado.")
+        return redirect('gestao_clientes')
+
+    cols, rows = _executar_sql("SELECT id_cliente, nome FROM [dbo].[Clientes] WHERE id_cliente = ?", (id_cliente,))
+    if not rows:
+        messages.error(request, "Cliente não encontrado.")
+        return redirect('gestao_clientes')
+    
+    cliente = dict(zip(cols, rows[0]))
+
+    if request.method == 'POST':
+        placa = request.POST.get('placa')
+        # ... (pegar os outros campos)
+
+        try:
+            conn = _get_db_connection()
+            cursor = conn.cursor()
+
+            # --- NOVA VERIFICAÇÃO: A placa já existe? ---
+            cursor.execute("SELECT COUNT(*) FROM [dbo].[Veiculos] WHERE placa = ?", (placa,))
+            existe = cursor.fetchone()[0]
+
+            if existe > 0:
+                messages.warning(request, f"Atenção: O veículo com placa {placa} já está cadastrado no sistema!")
+            else:
+                # Faz o insert se não existir
+                cursor.execute(
+                    "INSERT INTO [dbo].[Veiculos] (id_cliente, placa, marca, modelo, ano) VALUES (?, ?, ?, ?, ?)",
+                    (id_cliente, placa, request.POST.get('marca'), request.POST.get('modelo'), request.POST.get('ano'))
+                )
+                conn.commit()
+                messages.success(request, f"Veículo {request.POST.get('modelo')} cadastrado para {cliente['nome']}!")
+            
+            cursor.close()
+            conn.close()
+            return redirect('gestao_clientes')
+            
+        except Exception as e:
+            messages.error(request, f"Erro ao salvar: {e}")
+
+    return render(request, 'cadastroVeiculos.html', {'cliente': cliente})
