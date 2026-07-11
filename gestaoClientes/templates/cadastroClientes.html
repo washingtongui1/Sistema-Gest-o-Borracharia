@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/cadastroClientes.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="cadastro-container">
+  <div class="cadastro-card">
+    <h2>Cadastrar Cliente</h2>
+    <form method="POST">
+      {% csrf_token %}
+      <div class="form-group">
+        <label>Nome</label>
+        <input type="text" name="nome" placeholder="Digite seu nome" required>
+      </div>
+      <div class="form-group">
+        <label>CPF</label>
+        <input type="text" id="cpfInput" name="cpf" placeholder="000.000.000-00" maxlength="14" required
+          oninput="formatarCPF(this)">
+      </div>
+      <div class="form-group">
+        <label>Telefone</label>
+        <input type="text" id="telefoneInput" name="telefone" placeholder="(00) 99999-0000" maxlength="15"
+          oninput="formatarTelefone(this)">
+      </div>
+      <div class="form-group">
+        <label>E-mail</label>
+        <input type="email" name="email" placeholder="Digite seu e-mail">
+      </div>
+      <button type="submit" class="btn-cadastrar">Cadastrar</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  function formatarCPF(input) {
+    let v = input.value.replace(/\D/g, '');
+    v = v.replace(/(\d{3})(\d)/, '$1.$2');
+    v = v.replace(/(\d{3})(\d)/, '$1.$2');
+    v = v.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+    input.value = v;
+  }
+
+  function formatarTelefone(input) {
+    let v = input.value.replace(/\D/g, ''); // Remove tudo que não é dígito
+    v = v.replace(/^(\d{2})(\d)/, '($1) $2'); // Coloca parênteses nos dois primeiros dígitos
+    v = v.replace(/(\d{5})(\d{4})$/, '$1-$2'); // Coloca o hífen entre o quinto e o quarto dígito final
+    input.value = v;
+  }
+</script>
+{% endblock %}

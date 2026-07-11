@@ -1,4 +1,4 @@
-/* Sidebar estilizada com transição elegante */
+/* --- Sidebar estilizada com transição elegante --- */
 .sidebar {
   position: fixed;
   top: 0;
@@ -6,39 +6,31 @@
   width: 250px;
   height: 100vh;
   background-color: #ffffff;
-  /* Gradiente linear suave que cria uma separação visual sem ser uma linha sólida */
   background: linear-gradient(to right, #ffffff 98%, rgba(0, 0, 0, 0.05) 100%);
-  /* Sombra leve para profundidade */
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
   z-index: 1050;
   padding-top: 30px;
 }
 
-/* Título */
-/* Sidebar título mais suave */
+/* --- Título da Sidebar --- */
 .sidebar h4 {
   font-size: 1.1rem;
-  /* Tamanho ligeiramente menor */
   font-weight: 600;
-  /* Menos agressivo que o 700 */
   color: #495057;
-  /* Cinza escuro em vez de preto puro */
   letter-spacing: 0.5px;
-  /* Espaçamento leve para elegância */
   margin-bottom: 40px !important;
   text-align: center;
   text-transform: uppercase;
-  /* Dá um ar profissional */
 }
 
-/* Conteúdo */
+/* --- Conteúdo Principal --- */
 .content {
   margin-left: 250px;
   padding: 25px;
   position: relative;
 }
 
-/* Links */
+/* --- Links da Sidebar --- */
 .sidebar .nav-link {
   color: #6c757d;
   font-weight: 500;
@@ -48,9 +40,38 @@
   transition: all 0.3s ease;
 }
 
-/* Efeito de destaque */
+/* Efeito de destaque no hover */
 .sidebar .nav-link:hover {
   background-color: #f8f9fa;
   color: #007bff;
   padding-left: 30px;
+}
+
+/* --- Estilização do Sistema de Mensagens (Alerts) --- */
+.container-mensagens {
+  margin-bottom: 20px;
+}
+
+/* Ajuste das cores para combinar com o tema clean */
+.alert.success {
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+  color: #155724;
+}
+
+.alert.error {
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+  color: #721c24;
+}
+
+.alert.warning {
+  background-color: #fff3cd;
+  border-color: #ffeeba;
+  color: #856404;
+}
+
+/* Ajuste opcional para o botão de fechar ficar alinhado */
+.alert .btn-close {
+  padding: 1.25rem 1rem;
 }
