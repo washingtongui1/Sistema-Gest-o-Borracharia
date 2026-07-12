@@ -9,7 +9,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = os.getenv('DEBUG') == 'True'
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
+
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    'sistema-gest-o-borracharia.railway.internal',
+    'sistema-gest-o-borracharia-production-d230.up.railway.app',
+    '.up.railway.app',
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
