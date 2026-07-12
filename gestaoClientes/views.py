@@ -282,6 +282,11 @@ def dashboard_view(request):
     return render(request, 'dashboard.html')
 
 def login_view(request):
+    # --- Adicione estas duas linhas abaixo ---
+    if request.user.is_authenticated:
+        return redirect('gestao_clientes')
+    # -----------------------------------------
+
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
