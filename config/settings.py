@@ -86,3 +86,18 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',  # Ou o caminho para a pasta onde está seu CSS
 ]
+
+# --- Configurações de Autenticação (Adicione ao final do seu arquivo) ---
+
+# Define o nome da rota (definida no seu urls.py) para a página de login.
+# Quando o @login_required bloquear uma página, ele enviará o usuário para esta URL.
+LOGIN_URL = 'login'
+
+# Define para onde o Django redireciona o usuário após um login bem-sucedido.
+# Certifique-se de que 'gestao_clientes' seja o nome da 'name' da sua URL no urls.py.
+LOGIN_REDIRECT_URL = 'gestao_clientes'
+
+# Define para onde o usuário é enviado após fazer o logout (opcional, mas recomendado).
+LOGOUT_REDIRECT_URL = 'login'
+
+# --- Fim das configurações ---

@@ -4,6 +4,9 @@ import pyodbc
 from dotenv import load_dotenv
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import login, logout
+from django.contrib.auth.decorators import login_required
 
 logger = logging.getLogger(__name__)
 
@@ -36,6 +39,11 @@ def _executar_sql(query, params=()):
 
 # --- Views ---
 
+def logout_view(request):
+    logout(request)
+    return redirect('login')
+
+@login_required
 def gestaoClientes(request):
     cpf = request.GET.get('cpf')
     cliente, veiculos, error_message = None, [], None
@@ -72,6 +80,7 @@ def gestaoClientes(request):
         'error_message': error_message
     })
 
+@login_required
 def cadastrar_usuario(request):
     if request.method == 'POST':
         nome = request.POST.get('nome')
@@ -101,6 +110,7 @@ def cadastrar_usuario(request):
 
     return render(request, 'cadastroClientes.html')
 
+@login_required
 def cadastrar_veiculo(request, id_cliente):
     id_autorizado = request.session.get('id_cliente_autorizado')
     if id_autorizado is None or int(id_cliente) != int(id_autorizado):
@@ -139,8 +149,8 @@ def cadastrar_veiculo(request, id_cliente):
 
     return render(request, 'cadastroVeiculos.html', {'cliente': cliente})
 
+@login_required
 def criar_nova_os(request, id_cliente):
-    # 1. Busca dados iniciais (simplificado usando sua função _executar_sql)
     cols_c, rows_c = _executar_sql("SELECT nome FROM Clientes WHERE id_cliente = ?", (id_cliente,))
     cliente = {'nome': rows_c[0][0]} if rows_c else {'nome': 'Cliente não encontrado'}
 
@@ -150,12 +160,10 @@ def criar_nova_os(request, id_cliente):
     cols_f, rows_f = _executar_sql("SELECT id_funcionario, nome_completo FROM Funcionarios")
     funcionarios = [dict(zip(cols_f, row)) for row in rows_f]
 
-    # 2. Processamento POST
     if request.method == 'POST':
         conn = _get_db_connection()
         try:
             cursor = conn.cursor()
-            # Inserção completa para atender às colunas obrigatórias do seu banco
             cursor.execute("""
                 INSERT INTO [dbo].[OrdemServico] 
                 (id_cliente, id_veiculo, id_funcionario, data_abertura, status_os, valor_total)
@@ -178,35 +186,30 @@ def criar_nova_os(request, id_cliente):
         'funcionarios': funcionarios
     })
 
-from django.shortcuts import render, redirect
-
+@login_required
 def adicionar_itens_os(request, id_os):
     conn = _get_db_connection()
     cursor = conn.cursor()
 
     if request.method == 'POST':
-        # 1. Captura os dados do formulário
         produtos = request.POST.getlist('produto[]')
         qtds = request.POST.getlist('qtd[]')
         valores = request.POST.getlist('valor[]')
-        observacoes = request.POST.get('observacoes') # Captura a observação
+        observacoes = request.POST.get('observacoes')
         
         valor_total_calculado = 0.0
 
-        # 2. Insere os itens e calcula o valor total em memória
         for i in range(len(produtos)):
             if produtos[i]:
                 valor_unitario = float(valores[i])
                 quantidade = int(qtds[i])
-                total_item = valor_unitario * quantidade
-                valor_total_calculado += total_item
+                valor_total_calculado += (valor_unitario * quantidade)
 
                 cursor.execute("""
                     INSERT INTO [dbo].[ItensOrdemServico] (id_os, id_produto, quantidade, valor_unitario)
                     VALUES (?, ?, ?, ?)
                 """, (id_os, produtos[i], qtds[i], valor_unitario))
         
-        # 3. Atualiza a tabela OrdemServico com o valor total e observações
         cursor.execute("""
             UPDATE [dbo].[OrdemServico] 
             SET valor_total = ?, observacoes = ? 
@@ -217,56 +220,96 @@ def adicionar_itens_os(request, id_os):
         cursor.close()
         conn.close()
         return redirect('gestao_clientes')
-
     else:
-        # Busca produtos para o select
         cursor.execute("SELECT id_produto, nome_produto, preco_venda FROM [dbo].[Produtos]")
         produtos_disponiveis = cursor.fetchall()
         cursor.close()
         conn.close()
-        
         return render(request, 'adicionarItens.html', {
             'id_os': id_os,
             'produtos_disponiveis': produtos_disponiveis
         })
-        
-    # Renderiza a tela de adição com o ID da OS em mãos
-    return render(request, 'adicionarItens.html', {'id_os': id_os})   
-from django.shortcuts import redirect
-from django.contrib import messages # Opcional: para exibir mensagens na tela
 
+@login_required
 def cancelar_os(request, id_os):
     conn = None
     try:
-        # Abre a conexão com o banco
         conn = _get_db_connection()
         cursor = conn.cursor()
-        
-        # Realiza o UPDATE para marcar a OS como 'Cancelada'
-        # Usamos parâmetros (?) para evitar SQL Injection
-        cursor.execute("""
-            UPDATE [dbo].[OrdemServico] 
-            SET status_os = 'Cancelada' 
-            WHERE id_os = ?
-        """, (id_os,))
-        
+        cursor.execute("UPDATE [dbo].[OrdemServico] SET status_os = 'Cancelada' WHERE id_os = ?", (id_os,))
         conn.commit()
-        
     except Exception as e:
-        # Se ocorrer um erro, você pode logar ou exibir uma mensagem
         print(f"Erro ao cancelar a OS: {e}")
-        # Opcional: messages.error(request, "Erro ao cancelar a OS.")
-        
     finally:
-        # Garante que a conexão seja fechada, independente de ter dado erro ou não
         if conn:
             cursor.close()
             conn.close()
-            
-    # Redireciona de volta para a listagem (certifique-se que 'gestao_clientes' 
-    # é o nome da rota no seu urls.py)
     return redirect('gestao_clientes')
 
-#Não mexer aqui, pois é uma página que será criada futuramente.
+@login_required
+def listar_ordem_servico(request):
+    query = """
+        SELECT 
+            o.id_os, 
+            o.data_abertura, 
+            o.status_os, 
+            o.valor_total, 
+            c.nome AS cliente_nome, 
+            v.placa AS veiculo_placa, 
+            v.modelo AS veiculo_modelo
+        FROM [dbo].[OrdemServico] o
+        INNER JOIN [dbo].[Veiculos] v ON o.id_veiculo = v.id_veiculo
+        INNER JOIN [dbo].[Clientes] c ON o.id_cliente = c.id_cliente
+        ORDER BY o.data_abertura DESC
+    """
+    try:
+        cols, rows = _executar_sql(query)
+        ordens = [dict(zip(cols, row)) for row in rows]
+    except Exception as e:
+        logger.exception('Erro ao buscar ordens de serviço')
+        ordens = []
+        messages.error(request, f"Erro ao carregar ordens: {e}")
+
+    return render(request, 'listarOrdemServico.html', {'ordens': ordens})
+
+@login_required
 def estoque_geral(request):
     return render(request, 'estoque.html')
+
+@login_required
+def dashboard_view(request):
+    # Por enquanto, apenas renderiza uma página de dashboard
+    return render(request, 'dashboard.html')
+
+def login_view(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect('gestao_clientes')
+    else:
+        form = AuthenticationForm()
+    return render(request, 'login.html', {'form': form})
+
+@login_required
+def finalizar_os_view(request, id_os):
+    if request.method == 'POST':
+        conn = None
+        try:
+            conn = _get_db_connection()
+            cursor = conn.cursor()
+            cursor.execute("UPDATE [dbo].[OrdemServico] SET status_os = 'Concluída' WHERE id_os = ?", (id_os,))
+            conn.commit()
+            messages.success(request, f"Ordem de Serviço {id_os} finalizada com sucesso!")
+        except Exception as e:
+            logger.exception('Erro ao finalizar a OS')
+            messages.error(request, f"Erro ao finalizar a OS: {e}")
+        finally:
+            if conn:
+                try: cursor.close()
+                except: pass
+                try: conn.close()
+                except: pass
+        
+        return redirect('listar_ordem_servico')

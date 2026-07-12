@@ -17,18 +17,40 @@
 
 <body>
 
+  <!-- Exibe a sidebar apenas se o usuário estiver logado -->
+  {% if user.is_authenticated %}
   <div class="sidebar">
     <h4 class="text-center mb-4">Gestão Borracharia</h4>
     <ul class="nav flex-column">
-      <li class="nav-item"><a class="nav-link" href="#">Dashboard</a></li>
-      <li class="nav-item"><a class="nav-link" href="{% url 'gestao_clientes' %}">Gestão de Clientes</a></li>
-      <li class="nav-item"><a class="nav-link" href="#">Ordens de Serviço</a></li>
-      <li class="nav-item"><a class="nav-link" href="{% url 'estoque_geral' %}">Estoque</a></li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'gestao_clientes' %}">Gestão de Clientes</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'listar_ordem_servico' %}">Ordens de Serviço</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'estoque_geral' %}">Estoque</a>
+      </li>
+
+      <!-- Formulário de Logout para evitar o erro 405 -->
+      <li class="nav-item mt-4">
+        <form action="{% url 'logout' %}" method="post">
+          {% csrf_token %}
+          <button type="submit" class="nav-link text-danger border-0 bg-transparent w-100 text-start">
+            Sair do Sistema
+          </button>
+        </form>
+      </li>
     </ul>
   </div>
+  {% endif %}
 
-  <div class="content">
-    <!-- Bloco de mensagens do Django para feedback do sistema -->
+  <!-- Se não estiver autenticado, o conteúdo ocupa toda a tela -->
+  <div class="content" {% if not user.is_authenticated %}style="margin-left: 0; width: 100%;" {% endif %}>
+    <!-- Bloco de mensagens -->
     <div class="container-mensagens">
       {% if messages %}
       {% for message in messages %}
@@ -40,7 +62,7 @@
       {% endif %}
     </div>
 
-    <!-- Conteúdo principal das páginas -->
+    <!-- Conteúdo principal -->
     {% block content %}{% endblock %}
   </div>
 

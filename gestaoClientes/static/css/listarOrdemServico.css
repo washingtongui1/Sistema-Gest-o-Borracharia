@@ -1,0 +1,55 @@
+/* listarOrdemServico.css */
+
+.container-fluid {
+    padding: 20px;
+}
+
+h2 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Ajuste para o novo seletor de filtro */
+#filtroStatus {
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+    padding: 8px;
+    background-color: #fff;
+}
+
+/* Estilo da Tabela */
+.table {
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+.table thead {
+    background-color: #f8f9fa;
+}
+
+.table th,
+.table td {
+    vertical-align: middle;
+    text-align: center;
+}
+
+/* Estilização específica por Status na tabela */
+.linha-os[data-status="Concluída"] {
+    border-left: 5px solid #28a745;
+}
+
+.linha-os[data-status="Em Execução"] {
+    border-left: 5px solid #007bff;
+}
+
+.linha-os[data-status="Cancelada"] {
+    border-left: 5px solid #dc3545;
+    background-color: #f8d7da;
+}
+
+/* Ajuste nos botões de ação */
+.btn-info {
+    color: #fff;
+}
