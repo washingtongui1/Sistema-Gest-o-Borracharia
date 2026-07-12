@@ -7,13 +7,8 @@ load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Agora usa a variável de ambiente
 SECRET_KEY = os.getenv('SECRET_KEY')
-
-# Converte string do .env para booleano
 DEBUG = os.getenv('DEBUG') == 'True'
-
-# Lista de hosts permitidos
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
 
 INSTALLED_APPS = [
@@ -26,8 +21,14 @@ INSTALLED_APPS = [
     'gestaoClientes',
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://sistema-gest-o-borracharia-production-d3a5.up.railway.app',
+    'https://*.up.railway.app'
+]
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware', # ADICIONADO PARA CSS/JS
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -55,7 +56,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-# Configuração do SQL Server lendo do .env
 DATABASES = {
     'default': {
         'ENGINE': 'mssql',
@@ -82,28 +82,18 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
+# --- Configurações de Estáticos ---
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') # Pasta para o collectstatic no Railway
 STATICFILES_DIRS = [
-    BASE_DIR / 'static',  # Ou o caminho para a pasta onde está seu CSS
+    BASE_DIR / 'gestaoClientes' / 'static',
 ]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# --- Configurações de Autenticação ---
-
-# Define o nome da rota (definida no seu urls.py) para a página de login.
+# --- Autenticação e Sessão ---
 LOGIN_URL = 'login'
-
-# Define para onde o Django redireciona o usuário após um login bem-sucedido.
 LOGIN_REDIRECT_URL = 'gestao_clientes'
-
-# Define para onde o usuário é enviado após fazer o logout.
 LOGOUT_REDIRECT_URL = 'login'
 
-# --- Adições para resolver o problema da sessão ---
-
-# Expira a sessão assim que o usuário fecha o navegador
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-
-# Garante que a sessão seja salva a cada requisição
 SESSION_SAVE_EVERY_REQUEST = True
-
-# --- Fim das configurações ---
