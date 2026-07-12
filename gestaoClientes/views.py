@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 def _get_db_connection():
     load_dotenv()
     conn_str = (
-        "DRIVER={ODBC Driver 17 for SQL Server};"
+        "DRIVER={ODBC Driver 18 for SQL Server};"
         f"SERVER={os.getenv('DB_HOST')};"
         f"DATABASE={os.getenv('DB_NAME')};"
         f"UID={os.getenv('DB_USER')};"
