@@ -1,5 +1,13 @@
+# Ambientes e configs
 .env
 venv/
 __pycache__/
-db.sqlite3
 *.pyc
+
+# Banco de dados local (caso você use SQLite também)
+db.sqlite3
+
+# Arquivos de sistema/IDE
+.vscode/
+.DS_Store
+EXPLICACAO_VIEW.txt
