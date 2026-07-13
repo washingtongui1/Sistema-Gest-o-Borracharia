@@ -9,15 +9,17 @@
 <div class="container-fluid">
   <h2 class="titulo-pagina">Gestão de Clientes e Veículos</h2>
 
-  <!-- Barra de Pesquisa -->
-  <form method="GET" class="search-container">
-    <input type="text" name="cpf" class="form-control-custom" placeholder="Pesquisar CPF">
-    <button class="btn-search" type="submit">
-      <img width="20" height="20" src="https://img.icons8.com/ios-glyphs/30/ffffff/search--v1.png" alt="search" />
-    </button>
+  <form method="GET" class="search-container row g-2 align-items-stretch">
+    <div class="col-12 col-sm-8 col-md-6 col-lg-5">
+      <input type="text" name="cpf" class="form-control-custom" placeholder="Pesquisar CPF" aria-label="Pesquisar CPF">
+    </div>
+    <div class="col-auto">
+      <button class="btn-search" type="submit" aria-label="Buscar">
+        <img width="20" height="20" src="https://img.icons8.com/ios-glyphs/30/ffffff/search--v1.png" alt="Buscar" />
+      </button>
+    </div>
   </form>
 
-  <!-- Botão Limpar Pesquisa (Nome da URL corrigido para 'gestao_clientes') -->
   {% if cliente or error_message %}
   <div class="d-flex justify-content-center mb-4">
     <a href="{% url 'gestao_clientes' %}" class="btn-limpar"
@@ -29,12 +31,10 @@
   </div>
   {% endif %}
 
-  <div class="row">
-    <!-- Coluna Esquerda: Cards -->
-    <div class="col-md-8">
-      <div class="row">
-        <!-- Card Detalhes do Cliente -->
-        <div class="col-md-6">
+  <div class="row g-3">
+    <div class="col-12 col-lg-8">
+      <div class="row g-3">
+        <div class="col-12 col-md-6">
           <div class="painel-card">
             <div class="painel-titulo">Detalhes do cliente</div>
             <div class="painel-corpo">
@@ -49,8 +49,7 @@
             </div>
           </div>
         </div>
-        <!-- Card Veículo do Cliente -->
-        <div class="col-md-6">
+        <div class="col-12 col-md-6">
           <div class="painel-card">
             <div class="painel-titulo">Veículo do Cliente</div>
             <div class="painel-corpo">
@@ -67,17 +66,14 @@
       </div>
     </div>
 
-    <!-- Coluna Direita: Botões -->
-    <div class="col-md-4">
+    <div class="col-12 col-lg-4">
       <div class="d-grid gap-3">
-        <!-- Cadastrar Cliente -->
         <a href="{% url 'cadastrar_cliente' %}" class="btn-custom">
           <span class="icon"><img width="24" height="24"
               src="https://img.icons8.com/fluency-systems-filled/48/add-user-male.png" alt="add-user-male"></span>
           Cadastrar Cliente
         </a>
 
-        <!-- Cadastrar Veículo -->
         {% if cliente %}
         <a href="{% url 'cadastrar_veiculo' cliente.id_cliente %}" class="btn-custom">
           <span class="icon"><img width="24" height="24" src="https://img.icons8.com/ios-filled/50/tesla-model-s.png"
@@ -92,7 +88,6 @@
         </button>
         {% endif %}
 
-        <!-- Criar Nova OS (Lógica corrigida para sempre aparecer) -->
         {% if cliente %}
         {% if veiculos %}
         <a href="{% url 'criar_nova_os' cliente.id_cliente %}" class="btn-custom"

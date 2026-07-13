@@ -7,50 +7,51 @@
 <div class="container-fluid mt-4">
   <h2>Ordens de Serviço</h2>
 
-  <!-- Filtro via Select (Dropdown) -->
-  <div class="my-3" style="width: 250px;">
-    <label for="filtroStatus" class="form-label">Filtrar por Status:</label>
-    <select id="filtroStatus" class="form-select" onchange="filtrarStatus(this.value)">
-      <option value="todos">Ver Todos</option>
-      <option value="Em Execução">Em Execução</option>
-      <option value="Concluída">Concluída</option>
-      <option value="Cancelada">Cancelada</option>
-    </select>
+  <div class="row g-3 align-items-end mb-3">
+    <div class="col-12 col-md-6 col-lg-4">
+      <label for="filtroStatus" class="form-label">Filtrar por Status:</label>
+      <select id="filtroStatus" class="form-select" onchange="filtrarStatus(this.value)">
+        <option value="todos">Ver Todos</option>
+        <option value="Em Execução">Em Execução</option>
+        <option value="Concluída">Concluída</option>
+        <option value="Cancelada">Cancelada</option>
+      </select>
+    </div>
   </div>
 
-  <!-- Tabela de Listagem -->
-  <table class="table table-hover" id="tabelaOs">
-    <thead>
-      <tr>
-        <th>ID OS</th>
-        <th>Cliente</th>
-        <th>Veículo</th>
-        <th>Data Abertura</th>
-        <th>Status</th>
-        <th>Valor Total</th>
-        <th>Ações</th>
-      </tr>
-    </thead>
-    <tbody id="corpoTabelaOs">
-      {% for os in ordens %}
-      <tr class="linha-os" data-status="{{ os.status_os }}">
-        <td>{{ os.id_os }}</td>
-        <td>{{ os.cliente_nome }}</td>
-        <td>{{ os.veiculo_placa }} - {{ os.veiculo_modelo }}</td>
-        <td>{{ os.data_abertura|date:"d/m/y" }} às {{ os.data_abertura|time:"H:i" }}</td>
-        <td>{{ os.status_os }}</td>
-        <td>R$ {{ os.valor_total|floatformat:2 }}</td>
-        <td>
-          <!-- Botão que abre o modal passando os dados da OS -->
-          <button class="btn btn-sm btn-info"
-            onclick="abrirDetalhes('{{ os.id_os }}', '{{ os.cliente_nome }}', '{{ os.status_os }}', '{{ os.veiculo_placa }}')">
-            Detalhes
-          </button>
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+  <div class="table-responsive">
+    <table class="table table-hover" id="tabelaOs">
+      <thead>
+        <tr>
+          <th>ID OS</th>
+          <th>Cliente</th>
+          <th>Veículo</th>
+          <th>Data Abertura</th>
+          <th>Status</th>
+          <th>Valor Total</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody id="corpoTabelaOs">
+        {% for os in ordens %}
+        <tr class="linha-os" data-status="{{ os.status_os }}">
+          <td>{{ os.id_os }}</td>
+          <td>{{ os.cliente_nome }}</td>
+          <td>{{ os.veiculo_placa }} - {{ os.veiculo_modelo }}</td>
+          <td>{{ os.data_abertura|date:"d/m/y" }} às {{ os.data_abertura|time:"H:i" }}</td>
+          <td>{{ os.status_os }}</td>
+          <td>R$ {{ os.valor_total|floatformat:2 }}</td>
+          <td>
+            <button class="btn btn-sm btn-info"
+              onclick="abrirDetalhes('{{ os.id_os }}', '{{ os.cliente_nome }}', '{{ os.status_os }}', '{{ os.veiculo_placa }}')">
+              Detalhes
+            </button>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 </div>
 
 <!-- Modal para Detalhes (Sobrepondo a página) -->

@@ -1,4 +1,9 @@
-/* --- Sidebar estilizada com transição elegante --- */
+/* Base layout e sidebar */
+body {
+  background-color: #f0f2f5;
+  margin: 0;
+}
+
 .sidebar {
   position: fixed;
   top: 0;
@@ -9,50 +14,46 @@
   background: linear-gradient(to right, #ffffff 98%, rgba(0, 0, 0, 0.05) 100%);
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
   z-index: 1050;
-  padding-top: 30px;
+  padding: 30px 0 20px;
+  overflow-y: auto;
 }
 
-/* --- Título da Sidebar --- */
 .sidebar h4 {
   font-size: 1.1rem;
   font-weight: 600;
   color: #495057;
   letter-spacing: 0.5px;
-  margin-bottom: 40px !important;
+  margin-bottom: 40px;
   text-align: center;
   text-transform: uppercase;
 }
 
-/* --- Conteúdo Principal --- */
 .content {
   margin-left: 250px;
   padding: 25px;
   position: relative;
+  min-height: 100vh;
 }
 
-/* --- Links da Sidebar --- */
 .sidebar .nav-link {
   color: #6c757d;
   font-weight: 500;
   padding: 12px 25px;
-  margin: 0 15px 10px 15px;
+  margin: 0 15px 10px;
   border-radius: 10px;
   transition: all 0.3s ease;
 }
 
-/* Efeito de destaque no hover */
 .sidebar .nav-link:hover {
   background-color: #f8f9fa;
   color: #007bff;
   padding-left: 30px;
 }
 
-/* --- Estilização do Sistema de Mensagens (Alerts) --- */
 .container-mensagens {
   margin-bottom: 20px;
 }
 
-/* Ajuste das cores para combinar com o tema clean */
 .alert.success {
   background-color: #d4edda;
   border-color: #c3e6cb;
@@ -71,7 +72,32 @@
   color: #856404;
 }
 
-/* Ajuste opcional para o botão de fechar ficar alinhado */
 .alert .btn-close {
   padding: 1.25rem 1rem;
+}
+
+@media (max-width: 991.98px) {
+  .sidebar {
+    position: static;
+    width: 100%;
+    height: auto;
+    box-shadow: none;
+    padding: 20px 15px;
+  }
+
+  .content {
+    margin-left: 0;
+    padding: 15px;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .sidebar h4 {
+    margin-bottom: 20px;
+  }
+
+  .sidebar .nav-link {
+    padding: 10px 15px;
+    margin: 0 0 8px;
+  }
 }

@@ -9,27 +9,29 @@
 <div class="cadastro-container">
   <div class="cadastro-card">
     <h2>Cadastrar Cliente</h2>
-    <form method="POST">
+    <form method="POST" class="row g-3">
       {% csrf_token %}
-      <div class="form-group">
+      <div class="col-12 form-group">
         <label>Nome</label>
-        <input type="text" name="nome" placeholder="Digite seu nome" required>
+        <input type="text" name="nome" placeholder="Digite seu nome" required aria-label="Nome">
       </div>
-      <div class="form-group">
+      <div class="col-12 form-group">
         <label>CPF</label>
         <input type="text" id="cpfInput" name="cpf" placeholder="000.000.000-00" maxlength="14" required
-          oninput="formatarCPF(this)">
+          oninput="formatarCPF(this)" aria-label="CPF">
       </div>
-      <div class="form-group">
+      <div class="col-12 form-group">
         <label>Telefone</label>
         <input type="text" id="telefoneInput" name="telefone" placeholder="(00) 99999-0000" maxlength="15"
-          oninput="formatarTelefone(this)">
+          oninput="formatarTelefone(this)" aria-label="Telefone">
       </div>
-      <div class="form-group">
+      <div class="col-12 form-group">
         <label>E-mail</label>
-        <input type="email" name="email" placeholder="Digite seu e-mail">
+        <input type="email" name="email" placeholder="Digite seu e-mail" aria-label="E-mail">
       </div>
-      <button type="submit" class="btn-cadastrar">Cadastrar</button>
+      <div class="col-12">
+        <button type="submit" class="btn-cadastrar">Cadastrar</button>
+      </div>
     </form>
   </div>
 </div>

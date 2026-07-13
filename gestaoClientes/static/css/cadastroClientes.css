@@ -1,85 +1,16 @@
-/* Container: Removemos o gradiente azul, mantendo um fundo neutro suave */
+/* Cadastro de cliente */
 .cadastro-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  min-height: calc(100vh - 40px);
   width: 100%;
   padding: 20px;
   background-color: #f4f7f9;
-  /* Um cinza muito claro, neutro, igual aos outros painéis */
-}
-
-.cadastro-card {
-  /* Efeito de Vidro mantido */
-  background: rgba(255, 255, 255, 0.6);
-  /* Transparência sobre o fundo neutro */
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.8);
-
-  /* Elevação */
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
-  /* Sombra mais suave */
-
-  padding: 40px;
-  border-radius: 16px;
-  width: 100%;
-  max-width: 450px;
-}
-
-/* Ajuste nos inputs para combinar com o estilo minimalista */
-.form-group input {
-  background: rgba(255, 255, 255, 0.8);
-  /* Um pouco mais opaco para leitura */
-  border: 1px solid #dee2e6;
-  border-radius: 8px;
-  padding: 12px;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-/* Botão estilo minimalista (igual à sua imagem) */
-.btn-cadastrar {
-  width: 100%;
-  padding: 15px 25px;
-  background-color: #e9ecef !important;
-  /* A cor cinza clara da sua imagem */
-  border: 1px solid #dee2e6 !important;
-  border-radius: 50px !important;
-  /* O arredondamento total */
-  font-weight: 500;
-  color: #333 !important;
-  cursor: pointer;
-  text-align: left;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  /* Centraliza o texto e ícone */
-  margin-top: 10px;
-  transition: background-color 0.2s ease;
-}
-
-.btn-cadastrar:hover {
-  background-color: #d1d6db !important;
-  /* Um leve escurecimento ao passar o mouse */
-}
-
-/* Ajuste do container para manter o efeito de vidro, mas sem o azul */
-.cadastro-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  width: 100%;
-  padding: 20px;
-  background-color: #f8f9fa;
-  /* Fundo neutro e claro */
 }
 
 .cadastro-card {
   background: rgba(255, 255, 255, 0.7);
-  /* Vidro suave */
   backdrop-filter: blur(10px);
   border: 1px solid rgba(0, 0, 0, 0.05);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
@@ -87,4 +18,40 @@
   border-radius: 16px;
   width: 100%;
   max-width: 450px;
+}
+
+.form-group input {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 12px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.btn-cadastrar {
+  width: 100%;
+  padding: 15px 25px;
+  background-color: #e9ecef;
+  border: 1px solid #dee2e6;
+  border-radius: 50px;
+  font-weight: 500;
+  color: #333;
+  cursor: pointer;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+  transition: background-color 0.2s ease;
+}
+
+.btn-cadastrar:hover {
+  background-color: #d1d6db;
+}
+
+@media (max-width: 575.98px) {
+  .cadastro-card {
+    padding: 24px;
+  }
 }

@@ -1,10 +1,9 @@
-/* Removemos o flex do body para não conflitar com a base.html */
+/* Criar nova OS */
 body {
   background-color: #f0f2f5;
   margin: 0;
 }
 
-/* O card branco centralizado */
 .form-card {
   background: white;
   padding: 40px;
@@ -15,18 +14,16 @@ body {
   margin: 40px auto;
 }
 
-/* Padronização dos inputs e selects */
 .form-control {
   width: 100%;
   padding: 12px;
-  margin: 10px 0 20px 0;
+  margin: 10px 0 20px;
   border: 1px solid #ddd;
   border-radius: 4px;
   background-color: #f8f9fa;
   box-sizing: border-box;
 }
 
-/* Botão de Salvar */
 .btn-salvar {
   padding: 10px 20px;
   background-color: green;
@@ -42,7 +39,6 @@ body {
   background-color: #006400;
 }
 
-/* Botão Voltar */
 .btn-voltar {
   padding: 10px 20px;
   background-color: #6c757d;
@@ -60,17 +56,26 @@ body {
   background-color: #5a6268;
 }
 
-/* Estilo para quando a navbar estiver bloqueada */
-.nav-link,
-.sidebar a {
-  pointer-events: none;
-  opacity: 0.5;
-  cursor: not-allowed !important;
-}
-
-/* Container que agrupa os botões Voltar e Iniciar OS */
 .container-botoes {
   display: flex;
   gap: 10px;
   margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 575.98px) {
+  .form-card {
+    padding: 24px;
+    margin: 20px auto;
+  }
+
+  .container-botoes {
+    flex-direction: column;
+  }
+
+  .btn-salvar,
+  .btn-voltar {
+    width: 100%;
+    text-align: center;
+  }
 }

@@ -19,3 +19,19 @@ class DbConnectionHelpersTests(SimpleTestCase):
 
         self.assertIn('Pooling=True', conn_str)
         self.assertIn('Connect Timeout=30', conn_str)
+
+    def test_open_connection_returns_single_connection_per_request_flow(self):
+        class FakeCursor:
+            def close(self):
+                return None
+
+        class FakeConnection:
+            def cursor(self):
+                return FakeCursor()
+
+        with patch.object(views.pyodbc, 'connect', return_value=FakeConnection()) as connect_mock:
+            conn, cursor = views._open_connection()
+
+        self.assertEqual(connect_mock.call_count, 1)
+        self.assertIsNotNone(conn)
+        self.assertIsNotNone(cursor)

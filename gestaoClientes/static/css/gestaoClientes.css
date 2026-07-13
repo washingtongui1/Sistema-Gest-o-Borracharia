@@ -1,12 +1,10 @@
-/* Ajuste para o Título da Página - Alinhado à esquerda */
+/* Layout da tela de gestão */
 .titulo-pagina {
-  color: #495057 !important;
-  font-weight: 500 !important;
+  color: #495057;
+  font-weight: 500;
   margin-bottom: 30px;
   text-align: left;
-  /* Alinhado à esquerda */
   padding-left: 10px;
-  /* Um pequeno respiro para não ficar colado na borda */
 }
 
 .painel-card {
@@ -34,44 +32,40 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-/* Estilo dos Botões - Versão Minimalista e Arredondada */
 .btn-custom {
-  background-color: #e9ecef !important;
-  border: 1px solid #dee2e6 !important;
-  border-radius: 50px !important;
-  padding: 15px 25px !important;
-  text-align: left !important;
-  font-weight: 500 !important;
-  color: #333 !important;
-  display: flex !important;
-  align-items: center !important;
-  width: 100% !important;
-  margin-bottom: 15px !important;
-  transition: background-color 0.2s ease !important;
-  text-decoration: none !important;
+  background-color: #e9ecef;
+  border: 1px solid #dee2e6;
+  border-radius: 50px;
+  padding: 15px 25px;
+  text-align: left;
+  font-weight: 500;
+  color: #333;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 15px;
+  transition: background-color 0.2s ease;
+  text-decoration: none;
 }
 
 .btn-custom:hover {
-  background-color: #d1d6db !important;
+  background-color: #d1d6db;
 }
 
 .btn-custom .icon {
   margin-right: 15px;
 }
 
-/* Estilo para garantir que todos os ícones fiquem pretos e alinhados */
 .btn-custom img {
   vertical-align: middle;
   margin-right: 8px;
   filter: brightness(0) saturate(100%);
 }
 
-/* Atualização da Barra de Pesquisa */
 .search-container {
   display: flex;
   justify-content: center;
   margin-bottom: 10px;
-  /* Reduzido levemente para o botão de limpar ficar próximo */
 }
 
 .form-control-custom {
@@ -100,25 +94,54 @@
   background-color: #d1d6db;
 }
 
-/* Ícone de busca na cor preta */
 .btn-search img {
   filter: brightness(0) saturate(100%);
   width: 20px;
   height: 20px;
 }
 
-/* Estilo do Botão Limpar Pesquisa */
 .btn-limpar {
-  color: #6c757d !important;
-  text-decoration: none !important;
-  font-size: 0.9em !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  margin-bottom: 30px !important;
-  transition: color 0.2s ease !important;
+  color: #6c757d;
+  text-decoration: none;
+  font-size: 0.9em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
+  transition: color 0.2s ease;
 }
 
 .btn-limpar:hover {
-  color: #333 !important;
+  color: #333;
+}
+
+@media (max-width: 767.98px) {
+  .titulo-pagina {
+    padding-left: 0;
+    text-align: center;
+  }
+
+  .search-container {
+    justify-content: stretch;
+  }
+
+  .form-control-custom {
+    border-radius: 50px;
+    max-width: 100%;
+  }
+
+  .btn-search {
+    border-left: 1px solid #dee2e6;
+    border-radius: 50px;
+    margin-top: 8px;
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .btn-custom {
+    padding: 13px 18px;
+    font-size: 0.95rem;
+  }
 }

@@ -37,14 +37,12 @@
   color: #444;
 }
 
-/* Estiliza os inputs automaticamente */
 .form-group input {
   width: 100%;
   padding: 12px;
   border: 1px solid #ddd;
   border-radius: 6px;
   font-size: 16px;
-  /* 16px evita zoom automático em iPhones */
 }
 
 .btn-login {
@@ -65,7 +63,6 @@
   background: #0b5ed7;
 }
 
-/* Estilo para o botão Logout na Sidebar */
 .sidebar .nav-link.text-danger {
   font-weight: bold;
   border-top: 1px solid #eee;
@@ -75,7 +72,13 @@
 }
 
 .sidebar .nav-link.text-danger:hover {
-  color: #dc3545 !important;
+  color: #dc3545;
   background-color: #fff5f5;
   border-radius: 4px;
+}
+
+@media (max-width: 575.98px) {
+  .login-card {
+    padding: 24px;
+  }
 }
