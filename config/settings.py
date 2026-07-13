@@ -1,11 +1,12 @@
 import os
 from pathlib import Path
+
 from dotenv import load_dotenv
 
-# Carrega as variáveis do arquivo .env
-load_dotenv()
-
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Carrega o arquivo .env apenas uma vez durante a inicialização.
+load_dotenv(dotenv_path=BASE_DIR / '.env')
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = os.getenv('DEBUG') == 'True'
@@ -104,3 +105,20 @@ LOGOUT_REDIRECT_URL = 'login'
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_SAVE_EVERY_REQUEST = True
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'gestaoClientes': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    },
+}
